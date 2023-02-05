@@ -31,7 +31,7 @@ const Home: NextPage = () => {
                   {name}
                 </div>
                 <div className="mb-4 text-xl font-medium text-teal-500">
-                  ${amount}
+                  ₪{amount}
                 </div>
                 <div className="text-sm text-gray-700">{dedication}</div>
               </div>
