@@ -5,7 +5,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 export const donationsRouter = createTRPCRouter({
   data: publicProcedure
     .input(z.object({ id: z.string() }))
-    .query(({ input }) => {
+    .query(({ }) => {
       return {
         donations: data,
       };

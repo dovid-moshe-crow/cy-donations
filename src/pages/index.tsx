@@ -1,6 +1,5 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import { api } from "../utils/api";
 
@@ -22,8 +21,11 @@ const Home: NextPage = () => {
       <div className="p-4">
         <h2 className="mb-4 text-2xl font-bold">Donation List</h2>
         <div className="-mx-2 flex flex-wrap">
-          {data.donations.map(({ amount, dedication, name }) => (
-            <div className="w-full p-2 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+          {data.donations.map(({ amount, dedication, name }, i) => (
+            <div
+              className="w-full p-2 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
+              key={i}
+            >
               <div className="h-48 text-clip rounded-lg bg-white p-6 shadow-lg">
                 <div className="mb-2 text-3xl font-bold text-indigo-500">
                   {name}
