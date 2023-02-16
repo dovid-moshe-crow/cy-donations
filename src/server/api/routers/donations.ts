@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+
 import { z } from "zod";
 import axios from "axios";
 import { GoogleSpreadsheet } from "google-spreadsheet";
