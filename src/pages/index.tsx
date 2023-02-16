@@ -4,9 +4,12 @@ import Head from "next/head";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
-  const { data, isLoading, isError } = api.donations.data.useQuery({
-    id: "from tRPC",
-  });
+  const { data, isLoading, isError } = api.donations.data.useQuery(
+    {
+      id: "from tRPC",
+    },
+    { refetchInterval: 30000 }
+  );
 
   if (isLoading) return <p>loading...</p>;
   if (isError) return <p>error loading data</p>;
@@ -26,14 +29,16 @@ const Home: NextPage = () => {
               className="w-full p-2 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
               key={i}
             >
-              <div className="h-48 text-clip rounded-lg bg-white p-6 shadow-lg">
+              <div className="flex h-48 flex-col  items-center justify-center text-clip rounded-lg bg-white p-6 shadow-lg">
                 <div className="mb-2 text-3xl font-bold text-indigo-500">
                   {name}
                 </div>
                 <div className="mb-4 text-xl font-medium text-teal-500">
                   ₪{amount}
                 </div>
-                <div className="text-sm text-gray-700">{dedication}</div>
+                <div className="text-base text-gray-700" dir="rtl">
+                  {dedication}
+                </div>
               </div>
             </div>
           ))}
