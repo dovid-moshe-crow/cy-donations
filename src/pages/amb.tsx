@@ -34,13 +34,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="p-4" dir="rtl">
-        {/* <Card withBorder radius="md" p="xl" shadow="md">
-          <Text size="lg" weight={500}>
-            {`${data.target}₪ / ${data.totalAmountILS}₪`}
-          </Text>
-          <Progress value={data.percent} mt="md" size="lg" radius="xl" />
-        </Card> */}
-
         <div className="-mx-1 mt-1 flex flex-wrap ">
           {data.map(({ name, amountILS, amountUSD, percent, target }, i) => (
             <Paper
