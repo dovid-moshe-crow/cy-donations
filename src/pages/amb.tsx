@@ -42,7 +42,7 @@ const Home: NextPage = () => {
         </Card> */}
 
         <div className="-mx-1 mt-1 flex flex-wrap ">
-          {data.map(({ name, amountILS, amountUSD, percent }, i) => (
+          {data.map(({ name, amountILS, amountUSD, percent, target }, i) => (
             <Paper
               key={i}
               p={4}
@@ -53,7 +53,7 @@ const Home: NextPage = () => {
                   {name}
                 </Text>
                 <Text color="green" fz={20} align="center">
-                  {amountILS.toFixed(0)}₪
+                  {target}₪ / {amountILS.toFixed(0)}₪
                 </Text>
 
                 <Progress value={percent} mt="md" size="lg" radius="xl" />
