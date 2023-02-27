@@ -20,11 +20,14 @@ async function powerlink(params: PowerlinkParams) {
     for (const [key, value] of params.query) {
       if (first) {
         queryString += `(${key} = ${value})`;
+        first = false;
       } else {
         queryString += ` AND (${key} = ${value})`;
       }
     }
   }
+
+  console.log(queryString)
 
   const result = await axios.post(
     "https://api.powerlink.co.il/api/query",

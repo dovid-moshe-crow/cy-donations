@@ -11,7 +11,7 @@ import Donation from "../components/Donation";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const { campaignId, source,ambId } = router.query;
+  const { campaignId, source, ambId } = router.query;
 
   const { data, isLoading, isError } = api.donations.donations.useQuery(
     {
@@ -21,6 +21,7 @@ const Home: NextPage = () => {
         (source == "excel" || source == "powerlink")
           ? source
           : undefined,
+      ambId: typeof ambId == "string" ? ambId : undefined,
     },
     { refetchInterval: 30000 }
   );

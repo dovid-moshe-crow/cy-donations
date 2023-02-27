@@ -14,11 +14,12 @@ export const donationsRouter = createTRPCRouter({
           .uuid()
           .default("177b5cd5-2a69-4933-992e-1dd3599eb77e"),
         source: z.enum(["excel", "powerlink"]).default("powerlink"),
+        ambId: z.string().uuid().optional(),
       })
     )
     .query(async ({ input }) =>
       input.source == "excel"
-        ? await excel.donations(input.campaignId)
-        : powerlink.donations(input.campaignId)
+        ? await excel.donations(input.campaignId, input.ambId)
+        : powerlink.donations(input.campaignId, input.ambId)
     ),
 });
