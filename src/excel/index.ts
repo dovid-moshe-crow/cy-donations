@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { Amb, Donation } from "../types";
 
