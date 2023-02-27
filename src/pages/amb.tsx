@@ -7,18 +7,20 @@ import { Card, Paper, Progress, Text, Stack, Grid } from "@mantine/core";
 
 import { api } from "../utils/api";
 import { useRouter } from "next/router";
+import Amb from "../components/Amb";
 
 const Home: NextPage = () => {
   const router = useRouter();
+  const { campaignId, source } = router.query;
 
-  const campaignId =
-    typeof router.query.id === "string"
-      ? router.query.id
-      : "177b5cd5-2a69-4933-992e-1dd3599eb77e";
-
-  const { data, isLoading, isError } = api.amb.data.useQuery(
+  const { data, isLoading, isError } = api.amb.amb.useQuery(
     {
-      id: campaignId,
+      campaignId: typeof campaignId == "string" ? campaignId : undefined,
+      source:
+        typeof source == "string" &&
+        (source == "excel" || source == "powerlink")
+          ? source
+          : undefined,
     },
     { refetchInterval: 30000 }
   );
@@ -36,22 +38,13 @@ const Home: NextPage = () => {
       <div className="p-4" dir="rtl">
         <div className="-mx-1 mt-1 flex flex-wrap ">
           {data.map(({ name, amountILS, amountUSD, percent, target }, i) => (
-            <Paper
+            <Amb
+              name={name}
+              amountILS={amountILS}
+              percent={percent}
+              target={target}
               key={i}
-              p={4}
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
-            >
-              <Card withBorder h={150} shadow="md" radius="md">
-                <Text color="blue" weight="bolder" fz={18} align="center">
-                  {name}
-                </Text>
-                <Text color="green" fz={20} align="center">
-                  {target}₪ / {amountILS.toFixed(0)}₪
-                </Text>
-
-                <Progress value={percent} mt="md" size="lg" radius="xl" />
-              </Card>
-            </Paper>
+            />
           ))}
         </div>
       </div>

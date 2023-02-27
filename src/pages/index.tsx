@@ -23,8 +23,10 @@ const Home: NextPage = () => {
       </Head>
       <Container>
         <Stack align={"center"}>
-          <Link href={"/amb"}>שגרירים</Link>
-          <Link href={"/donations"}>תרומות</Link>
+          <Link href={"/amb?source=powerlink"}>שגרירים powerlink</Link>
+          <Link href={"/amb?source=excel"}>שגרירים excel</Link>
+          <Link href={"/donations?source=powerlink"}>תרומות powerlink</Link>
+          <Link href={"/donations?source=excel"}>תרומות excel</Link>
         </Stack>
       </Container>
     </>

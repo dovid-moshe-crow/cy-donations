@@ -7,12 +7,20 @@ import { Card, Paper, Progress, Text, Stack, Grid } from "@mantine/core";
 
 import { api } from "../utils/api";
 import { useRouter } from "next/router";
+import Donation from "../components/Donation";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const { data, isLoading, isError } = api.donations.data.useQuery(
+  const { campaignId, source,ambId } = router.query;
+
+  const { data, isLoading, isError } = api.donations.donations.useQuery(
     {
-      id: "from tRPC",
+      campaignId: typeof campaignId == "string" ? campaignId : undefined,
+      source:
+        typeof source == "string" &&
+        (source == "excel" || source == "powerlink")
+          ? source
+          : undefined,
     },
     { refetchInterval: 30000 }
   );
@@ -30,7 +38,7 @@ const Home: NextPage = () => {
       <div className="p-4" dir="rtl">
         <Card withBorder radius="md" p="xl" shadow="md">
           <Text size="lg" weight={500}>
-            {`${data.target}₪ / ${data.totalAmountILS}₪`}
+            {`${data.target.toFixed(0)}₪ / ${data.totalAmountILS.toFixed(0)}₪`}
           </Text>
           <Progress value={data.percent} mt="md" size="lg" radius="xl" />
         </Card>
@@ -38,24 +46,13 @@ const Home: NextPage = () => {
         <div className="-mx-1 mt-1 flex flex-wrap ">
           {data.donations.map(
             ({ dedication, name, amountILS, amountUSD, amb, currency }, i) => (
-              <Paper
+              <Donation
+                amb={amb}
+                dedication={dedication}
+                amountILS={amountILS}
+                name={name}
                 key={i}
-                p={4}
-                className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
-              >
-                <Card withBorder h={150} shadow="md" radius="md">
-                  <Text color="blue" weight="bolder" fz={18} align="center">
-                    {name}
-                  </Text>
-                  <Text color="green" fz={20} align="center">
-                    {amountILS}₪
-                  </Text>
-                  <Text align="center">{dedication} </Text>
-                  <Text align="center" color="dimmed">
-                    {amb}
-                  </Text>
-                </Card>
-              </Paper>
+              />
             )
           )}
         </div>

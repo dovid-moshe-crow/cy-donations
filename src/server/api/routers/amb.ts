@@ -1,55 +1,23 @@
 /* eslint-disable */
-
 import { z } from "zod";
-import axios from "axios";
-
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import powerlink from "../../../powerlink";
+import excel from "../../../excel";
 
 export const ambRouter = createTRPCRouter({
-  data: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input: { id } }) => {
-      return await powerlink(id);
+  amb: publicProcedure
+    .input(
+      z.object({
+        campaignId: z
+          .string()
+          .uuid()
+          .default("177b5cd5-2a69-4933-992e-1dd3599eb77e"),
+        source: z.enum(["excel", "powerlink"]).default("powerlink"),
+      })
+    )
+    .query(async ({ input }) => {
+      return input.source == "excel"
+        ? await excel.amb(input.campaignId)
+        : await powerlink.amb(input.campaignId);
     }),
 });
-
-export async function powerlink(campaignId: string): Promise<Array<Amb>> {
-  const result = await axios.post(
-    "https://api.powerlink.co.il/api/query",
-    {
-      objecttype: "1020",
-      sort_type: "desc",
-      fields: "pcfsystemfield333,pcfUSDSUM,pcfLS,pcfsystemfield331",
-      query: `(pcfsystemfield326 = ${campaignId})`,
-    },
-    {
-      headers: {
-        "Content-type": "application/json",
-        tokenId: process.env.POWERLINK_TOKEN_ID,
-      },
-      timeout: 4000,
-    }
-  );
-
-  const data: Amb[] = result.data["data"]["Data"].map(
-    (x: Record<string, string>) => ({
-      name: x["pcfsystemfield333"],
-      amountUSD: x["pcfUSDSUM"],
-      amountILS: x["pcfLS"],
-      target: x["pcfsystemfield331"],
-    })
-  );
-
-  return data.map((x) => ({
-    ...x,
-    percent: (x.amountILS / x.target) * 100,
-  }));
-}
-
-type Amb = {
-  name: string;
-  amountUSD: number;
-  amountILS: number;
-  percent: number;
-  target: number;
-};
